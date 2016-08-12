@@ -2,8 +2,8 @@ from imgurpython import ImgurClient
 import csv
 import time
 
-client_id = 'ID'
-client_secret = 'SECRET'
+client_id = 'CLIENT_ID'
+client_secret = 'CLIENT_SECRET'
 
 client = ImgurClient(client_id, client_secret)
 
@@ -41,12 +41,24 @@ print("Total:"  + str(total_count))
 		
 new_rows = []
 
-with open('imgur.csv', 'rb') as f:
+with open('imgur_count.csv', 'rb') as f:
     reader = csv.reader(f)
     for row in reader:
         new_rows.append(row)
-    new_rows.append([time.strftime("%H:%M:%S"), time.strftime("%x"), str(jpeg_count), str(round(100 * (float(jpeg_count) / float(total_count)), 2)) + "%", str(png_count), str(round(100 * (float(png_count) / float(total_count)), 2)) + "%", str(gif_count), str(round(100 * (float(gif_count) / float(total_count)), 2)) + "%", str(total_count)])
+    new_rows.append([time.strftime("%m/%d/%Y")+ " - " +time.strftime("%H:%M"), str(jpeg_count), str(png_count), str(gif_count)])
 
-with open('imgur.csv', 'wb') as f:
+with open('imgur_count.csv', 'wb') as f:
+    writer = csv.writer(f)
+    writer.writerows(new_rows)
+	
+new_rows = []
+
+with open('imgur_percentage.csv', 'rb') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        new_rows.append(row)
+    new_rows.append([time.strftime("%m/%d/%Y")+ " - " + time.strftime("%H:%M"), str(round(100 * (float(jpeg_count) / float(total_count)), 2)),str(round(100 * (float(png_count) / float(total_count)), 2)), str(round(100 * (float(gif_count) / float(total_count)), 2))])
+
+with open('imgur_percentage.csv', 'wb') as f:
     writer = csv.writer(f)
     writer.writerows(new_rows)
